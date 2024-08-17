@@ -16,7 +16,9 @@ inputs:
 # Define your outputs here.
 outputs:
   failed_tests:
-    description: 'A list of the fully qualified names of the failed tests which can then be used as the filter for the next test run attempt'
+    description:
+      'A list of the fully qualified names of the failed tests which can then be
+      used as the filter for the next test run attempt'
 
 runs:
   using: node20
