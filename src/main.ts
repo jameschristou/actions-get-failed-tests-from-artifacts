@@ -15,7 +15,7 @@ export async function run(): Promise<void> {
     core.debug(new Date().toTimeString())
 
     // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    core.setOutput('failed_tests', ['failed-test1', 'failed-test2'])
 
     // if this is the first run attempt then nothing to do...just return an empty list
 
