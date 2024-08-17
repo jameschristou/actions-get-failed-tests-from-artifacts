@@ -36,6 +36,10 @@ jobs:
         id: install
         run: npm ci
 
+      - name: Run package
+        id: npm-run-package
+        run: npm run package
+
       - name: Lint Codebase
         id: super-linter
         uses: super-linter/super-linter/slim@v6
