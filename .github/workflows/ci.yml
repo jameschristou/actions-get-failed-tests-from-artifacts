@@ -57,7 +57,7 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          name_of_the_test_run: 'Test run name C# tests'
 
       - name: Print Output
         id: output
