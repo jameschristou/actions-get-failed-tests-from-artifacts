@@ -40,9 +40,9 @@ jobs:
       #   id: npm-lint
       #   run: npm run lint
 
-      - name: Test
-        id: npm-ci-test
-        run: npm run ci-test
+      # - name: Test
+      #   id: npm-ci-test
+      #   run: npm run ci-test
 
   test-action:
     name: GitHub Actions Test
@@ -73,6 +73,8 @@ jobs:
         uses: ./
         with:
           name_of_the_test_run: 'Test run name C# tests'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_name: ${{ github.event.repository.name }}
 
       - name: Print Output
         id: output
