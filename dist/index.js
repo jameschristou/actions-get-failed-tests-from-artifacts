@@ -24961,9 +24961,15 @@ async function run() {
         // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
         core.debug(`Test run name ${nameOfTheTestRun}`);
         // Set outputs for other workflow steps to use
-        core.setOutput('failed_tests', ['failed-test1', 'failed-test2']);
         let runAttempt = parseInt(process.env.GITHUB_RUN_ATTEMPT, 10);
         core.debug(`Run attempt: ${runAttempt}`);
+        if (runAttempt == 1) {
+            // there can be no previously failed tests if this is the first run attempt
+            core.setOutput('failed_tests', []);
+            core.debug(`exiting with empty failed tests`);
+            return;
+        }
+        core.setOutput('failed_tests', ['failed-test1', 'failed-test2']);
         // if this is the first run attempt then nothing to do...just return an empty list
         // otherwise call the API to get the list of artifacts for this workflow run
         // go through the list of artifacts and look for any related to this job
