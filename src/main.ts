@@ -14,8 +14,8 @@ export async function run(): Promise<void> {
     // Set outputs for other workflow steps to use
     let runAttempt = parseInt(process.env.GITHUB_RUN_ATTEMPT as string, 10);
     core.debug(`Run attempt: ${runAttempt}`);
-    
-    if(runAttempt == 1){
+
+    if (runAttempt == 1) {
       // there can be no previously failed tests if this is the first run attempt
       core.setOutput('failed_tests', []);
       core.debug(`exiting with empty failed tests`);
