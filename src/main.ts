@@ -6,16 +6,17 @@ import * as core from '@actions/core'
  */
 export async function run(): Promise<void> {
   try {
-    const nameOfTheTestRun: string = core.getInput('name_of_the_test_run')
+    const nameOfTheTestRun: string = core.getInput('name_of_the_test_run');
 
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Test run name ${nameOfTheTestRun}`)
-
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
+    core.debug(`Test run name ${nameOfTheTestRun}`);
 
     // Set outputs for other workflow steps to use
-    core.setOutput('failed_tests', ['failed-test1', 'failed-test2'])
+    core.setOutput('failed_tests', ['failed-test1', 'failed-test2']);
+
+    let runAttempt = parseInt(process.env.GITHUB_RUN_ATTEMPT as string, 10);
+
+    core.debug(`Run attempt: ${runAttempt}`);
 
     // if this is the first run attempt then nothing to do...just return an empty list
 
