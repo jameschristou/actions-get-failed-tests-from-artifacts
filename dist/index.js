@@ -29248,23 +29248,26 @@ async function run() {
             core.setFailed('Input `github_token` is required');
             return;
         }
-        const repoName = core.getInput('repo_name');
-        if (!repoName) {
-            core.setFailed('Input `repo_name` is required');
-            return;
-        }
         core.debug(`Repo owner: ${github.context.repo.owner}`);
         core.debug(`Repo: ${github.context.repo.repo}`);
-        core.debug(`Repo name: ${repoName}`);
         const octokit = github.getOctokit(token);
         let response = await octokit.rest.actions.listWorkflowRunArtifacts({
             owner: github.context.repo.owner,
-            repo: repoName,
+            repo: github.context.repo.repo,
             run_id: github.context.runId,
             per_page: 100,
             page: 1
         });
-        core.debug(`Response: ${response}`);
+        core.debug(`Response: ${JSON.stringify(response)}`);
+        if (response.status != 200) {
+            core.setFailed('Failed to retrieve list of workflow run artifacts');
+            return;
+        }
+        if (response.data.total_count == 0) {
+            core.setOutput('failed_tests', []);
+            core.debug(`exiting with no previously failed tests`);
+            return;
+        }
         core.setOutput('failed_tests', ['failed-test1', 'failed-test2']);
         // call the API to get the list of artifacts for this workflow run
         // go through the list of artifacts and look for any related to this job

@@ -74,7 +74,6 @@ jobs:
         with:
           name_of_the_test_run: 'Test run name C# tests'
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          repo_name: ${{ github.event.repository.name }}
 
       - name: Print Output
         id: output

@@ -12,6 +12,9 @@ inputs:
   name_of_the_test_run:
     description: 'This name is used to find the artifacts for your test results'
     required: true
+  github_token:
+    description: 'The token used for this workflow'
+    required: true
 
 # Define your outputs here.
 outputs:
