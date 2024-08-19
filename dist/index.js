@@ -29270,7 +29270,7 @@ async function run() {
         }
         core.debug(`Response: ${JSON.stringify(response.data.artifacts)}`);
         // try and find the artifact related to the previous test run
-        let artifacts = response.data.artifacts.filter(artifact => artifact.name == `${runName}-attempt-${runAttempt - 1}`);
+        let artifacts = response.data.artifacts.filter(artifact => artifact.name == `${runName} Test Results for Attempt-${runAttempt - 1}`);
         if (artifacts.length != 1) {
             core.setOutput('failed_tests', []);
             core.debug(`exiting with no previously failed tests`);

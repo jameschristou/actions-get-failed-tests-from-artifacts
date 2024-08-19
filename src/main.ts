@@ -59,7 +59,7 @@ export async function run(): Promise<void> {
 
     // try and find the artifact related to the previous test run
     let artifacts = response.data.artifacts.filter(
-      artifact => artifact.name == `${runName}-attempt-${runAttempt - 1}`
+      artifact => artifact.name == `${runName} Test Results for Attempt-${runAttempt - 1}`
     );
 
     if (artifacts.length != 1) {
