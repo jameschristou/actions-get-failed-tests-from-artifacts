@@ -7,10 +7,10 @@ import * as github from '@actions/github';
  */
 export async function run(): Promise<void> {
   try {
-    const nameOfTheTestRun: string = core.getInput('name_of_the_test_run');
+    const runName: string = core.getInput('run_name');
 
     // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Test run name ${nameOfTheTestRun}`);
+    core.debug(`Test run name: ${runName}`);
 
     // Set outputs for other workflow steps to use
     let runAttempt = parseInt(process.env.GITHUB_RUN_ATTEMPT as string, 10);
@@ -35,6 +35,7 @@ export async function run(): Promise<void> {
 
     const octokit = github.getOctokit(token);
 
+    // call the API to get the list of artifacts for this workflow run
     let response = await octokit.rest.actions.listWorkflowRunArtifacts({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
@@ -42,8 +43,6 @@ export async function run(): Promise<void> {
       per_page: 100,
       page: 1
     });
-
-    core.debug(`Response: ${JSON.stringify(response)}`);
 
     if (response.status != 200) {
       core.setFailed('Failed to retrieve list of workflow run artifacts');
@@ -56,9 +55,25 @@ export async function run(): Promise<void> {
       return;
     }
 
-    core.setOutput('failed_tests', ['failed-test1', 'failed-test2']);
+    core.debug(`Response: ${JSON.stringify(response.data.artifacts)}`);
 
-    // call the API to get the list of artifacts for this workflow run
+    // try and find the artifact related to the previous test run
+    let artifacts = response.data.artifacts.filter(
+      artifact => artifact.name == `${runName}-attempt-${runAttempt - 1}`
+    );
+
+    if (artifacts.length != 1) {
+      core.setOutput('failed_tests', []);
+      core.debug(`exiting with no previously failed tests`);
+      return;
+    }
+
+    // now we get the download url of the artifact
+    let artifactDownloadUrl = artifacts[0].archive_download_url;
+
+    core.debug(`Download url: ${artifactDownloadUrl}`);
+
+    core.setOutput('failed_tests', ['failed-test1', 'failed-test2']);
 
     // go through the list of artifacts and look for any related to this job
 
